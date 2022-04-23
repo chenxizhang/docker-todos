@@ -1,0 +1,29 @@
+# 这个直接用于azure的web app 部署
+version: '3.8'
+services:
+  app:
+    image: chenxizhang/todos
+    ports:
+      - 80:3000
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DB=todos
+    networks:
+      - todo-network
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=todos
+    networks:
+      - todo-network
+volumes:
+  todo-mysql-data:
+networks:
+  todo-network:
