@@ -4,9 +4,12 @@ FROM node:12-alpine
 RUN apk add --no-cache python2 g++ make
 # 设置工作目录。如果不存在会创建。注意，后续都会在这个基地址上面进行操作。
 WORKDIR /app
-# 把当前Dockerfile同目录的内容，全部复制到容器的/app目录下面。
-COPY . .
+COPY package.json yarn.lock ./
 # 安装node项目的依赖项
 RUN yarn install --production
+
+# 把当前Dockerfile同目录的内容，全部复制到容器的/app目录下面。
+COPY . .
+
 # 运行这个node应用程序
 CMD ["node","src/index.js"]
